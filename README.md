@@ -13,18 +13,22 @@ Before TNARC expands to new branches, an internal security review audits the HQ 
 | F1 | Devices are managed over Telnet | Credentials are sent in clear text. Anyone capturing traffic on a user VLAN could obtain admin credentials and take control of the network. | High |
 | F2 | Admins share one local password | Changes can't be traced to a person, which breaks accountability and audit trails. A departing employee keeps access until the shared password is changed everywhere. | High |
 | F3 | No protection against rogue DHCP servers on user ports | A rogue server could hand clients a malicious gateway or DNS server, routing finance traffic through an attacker, or cause outages by handing out bad addresses. | High |
-| F4 | No Protection against ARP spoofing on user VLANs | An attacker on the same VLAN could impersonate the default gateway and intercept or alter other users' traffic, including sessions to internal finance systems | High |
-| F5 | Any device can connect into any user port | Unapproved personal or attacker devices can join internal VLANs with full access to department networks and services | Medium |
+| F4 | No protection against ARP spoofing on user VLANs | An attacker on the same VLAN could impersonate the default gateway and intercept or alter other users' traffic, including sessions to internal finance systems. | High |
+| F5 | Any device can connect into any user port | Unapproved personal or attacker devices can join internal VLANs with full access to department networks and services. | Medium |
 | F6 | User ports don't block spanning-tree BPDUs | A switch connected to a user port could take part in spanning-tree, possibly becoming root bridge. That could cause network-wide disruption or redirect traffic through an unauthorized device. | Medium |
 | F7 | Device management is reachable from every user VLAN | Any user, or any compromised workstation, can attempt to log in to network devices. That widens the attack surface for bruteforce attacks and other exploits. | Medium |
 | F8 | Passwords are stored in plain text or with reversible encryption | Anyone who sees the configuration file (a backup, a support ticket, a repository) can read device passwords directly. | Medium |
-| F9 | No idle session timout or login attempt limits | unattended admin sessions stay open for anyone to use, and unlimited login attempts allow bruteforce attacks. | Low |
-| F10 | No warning banner before login | Without notice that access is restricted and monitored, enforcing policy or taking action against misuse becomes difficult | Low |
+| F9 | No idle session timeout or login attempt limits | Unattended admin sessions stay open for anyone to use, and unlimited login attempts allow bruteforce attacks. | Low |
+| F10 | No warning banner before login | Without notice that access is restricted and monitored, enforcing policy or taking action against misuse becomes difficult. | Low |
 
 ## Controls Applied
 
 | ID | Control | Applied to | Evidence |
 |----|---------|------------|----------|
+| F1 | SSH v2 enabled with RSA keys. Telnet disabled on all VTY lines. | All Switches |  |
+| F2 | Central authentication through AAA-Server (TACACS+) with individual admin accounts. One local emergency account as fallback if the server is unreachable | All switches | |
+| F8 | enable secret replaces enable password, local accounts use secret. service password-encryption enabled as an extra measure. | All Switches | |
+
 
 ## Topology Changes
 
@@ -46,6 +50,11 @@ Before TNARC expands to new branches, an internal security review audits the HQ 
 |------|---------|----------|--------|
 
 ## Challenges and Fixes
+1. Access switches were not able to receive ping responses beyond the distribution switches.
+    - A default gateway needed to be configured globally for the SVIs subnet. The default gateway does not affect traffic from the other VLANs.
+    - Layer 2 switch SVIs are in Protocol:DOWN by default since no physical ports are connected, a "no shutdown" command needs to be issued to start up the SVI.
+    - REMINDER: Add the SVI's VLAN to allowed in the trunk port, add the subnet to OSPF on both distribution switches for failover, and test connectivity to the AAA server BEFORE configuring login to avoid being locked out.
+2. 
 
 ## Limitations
 
