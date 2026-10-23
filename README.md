@@ -31,7 +31,6 @@ Before TNARC expands to new branches, an internal security review audits the HQ 
 | F4 | Dynamic ARP inspection on all user VLANs, validated against DHCP snooping bindings; uplinks trusted | Access switches | |
 | F5 | Port security on user ports: 1 MAC per port, sticky learning, shutdown on violation | Access switch user ports | |
 | F6 | PortFast with BPDU Guard on all user ports; a switch connected to a user port is err-disabled | Access switch user ports | |
-
 | F8 | enable secret replaces enable password, local accounts use secret. service password-encryption enabled as an extra measure. | All Switches | |
 
 
