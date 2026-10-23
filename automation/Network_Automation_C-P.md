@@ -1,0 +1,76 @@
+## SSH 
+
+-- Pre-configured hostname before using this --
+
+ip domain-name TNARC.com
+crypto key generate rsa
+2048
+ip ssh version 2
+line vty 0 15
+transport input ssh
+
+## AAA Server
+
+service password-encryption
+username localadmin secret localpass
+enable secret CiscoTNARCtest
+tacacs-server host 10.0.201.10
+tacacs-server key tacacskey
+aaa new-model
+aaa authentication login default group tacacs+ local
+line console 0
+login authentication default
+exit
+line vty 0 15
+login authentication default
+exit
+
+## DHCP Snooping
+
+ip dhcp snooping
+ip dhcp snooping vlan 10,20,30,99
+no ip dhcp snooping information option
+int range g0/1-2
+ip dhcp snooping trust
+exit
+do write
+ 
+
+ip dhcp snooping
+ip dhcp snooping vlan 110,120,130,199
+no ip dhcp snooping information option
+int range g0/1-2
+ip dhcp snooping trust
+exit
+do write
+ 
+
+## Dynamic ARP Inspection
+
+ip arp inspection vlan 110,120
+ip arp inspection validate src-mac dst-mac ip
+int range g0/1-2
+ip arp inspection trust
+exit
+do write
+
+ip arp inspection vlan 130,199
+ip arp inspection validate src-mac dst-mac ip
+int range g0/1-2
+ip arp inspection trust
+exit
+do write
+
+ip arp inspection vlan 10,20
+ip arp inspection validate src-mac dst-mac ip
+int range g0/1-2
+ip arp inspection trust
+exit
+do write
+
+ip arp inspection vlan 30,99
+ip arp inspection validate src-mac dst-mac ip
+int range g0/1-2
+ip arp inspection trust
+exit
+do write
