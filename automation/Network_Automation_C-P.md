@@ -74,3 +74,40 @@ int range g0/1-2
 ip arp inspection trust
 exit
 do write
+
+## Port-security
+
+int range f0/1-4
+switchport port-security
+switchport port-security maximum 1
+switchport port-security mac-address sticky
+switchport port-security violation shutdown
+exit
+
+## Portfast and BPDUguard
+
+spanning-tree portfast bpduguard default
+
+## SSH VTY ACL
+
+ip access-list extended SSH_Management
+permit tcp 10.0.99.0 0.0.0.255 any eq 22
+permit tcp 10.0.199.9 0.0.0.255 any eq 22
+line vty 0 15
+access-class SSH_Management in
+exit
+
+## VTY exec-timeout and SSH login limit and timeout
+
+ip ssh authentication-retries 3
+ip ssh time-out 60
+line console 0
+exec-timeout 5 0
+line vty 0 15
+exec-timeout 5 0
+exit
+
+## Banner
+
+banner motd z
+WARNING! Unauthorized access is prohibited. z
