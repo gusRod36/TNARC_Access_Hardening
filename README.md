@@ -2,6 +2,8 @@
 
 Builds on [Lab 1: Three-Tier Campus](https://github.com/gusRod36/TNARC_HQ_Lab_01)
 
+<img src="./Images/Topology-v2Hardening.JPG" alt="Hardened topology">
+
 ## The Problem
 
 Before TNARC expands to new branches, an internal security review audits the HQ network. As a financial company, TNARC handles sensitive client data, so the review declared the findings unacceptable. Leadership wants every finding closed before any new site goes live.
@@ -38,6 +40,9 @@ Before TNARC expands to new branches, an internal security review audits the HQ 
 
 
 ## Topology Changes
+| Device | Service | Subnet | Change |
+|--------|---------|--------|--------|
+| AAA-Server | TACACS+ | 10.0.201.0/24 | Added |
 
 ## Key Decisions
 1. Which ports does DHCP snooping trust, and why those?
