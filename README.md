@@ -43,7 +43,6 @@ Before TNARC expands to new branches, an internal security review audits the HQ 
 2. Port security: how many MACs per port, sticky or static, and which violation mode?
 
 3. TACACS+ or RADIUS for device logins, and why?
-    - 
 
 4. What happens to admin access if the AAA server is unreachable?
     - There is a local admin login to fall back on in emergency scenarios. 
