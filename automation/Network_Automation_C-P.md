@@ -110,4 +110,4 @@ exit
 ## Banner
 
 banner motd z
-WARNING! Unauthorized access is prohibited. z
+WARNING! Access is restricted and monitored. z
