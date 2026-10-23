@@ -25,16 +25,16 @@ Before TNARC expands to new branches, an internal security review audits the HQ 
 
 | ID | Control | Applied to | Evidence |
 |----|---------|------------|----------|
-| F1 | SSH v2 enabled with RSA keys. Telnet disabled on all VTY lines. | All Switches |  |
-| F2 | Central authentication through AAA-Server (TACACS+) with individual admin accounts. One local emergency account as fallback if the server is unreachable | All switches | |
-| F3 | DHCP ssnooping all user vlans, uplinks to distribution switches trusted, user ports untrusted | Access Switches | |
-| F4 | Dynamic ARP inspection on all user VLANs, validated against DHCP snooping bindings; uplinks trusted | Access switches | |
-| F5 | Port security on user ports: 1 MAC per port, sticky learning, shutdown on violation | Access switch user ports | |
-| F6 | PortFast with BPDU Guard on all user ports; a switch connected to a user port is err-disabled | Access switch user ports | |
-| F7 | VTY access restricted to the management VLANs (10.0.99.0/24, 10.0.199.0/24) | All switches | |
-| F8 | enable secret replaces enable password, local accounts use secret. service password-encryption enabled as an extra measure. | All Switches | |
-| F9 | Idle timeout on console and VTY lines; login attempts limited on SSH | All switches | |
-| F10 | Login banner stating that access is restricted and monitored | All switches | |
+| F1 | SSH v2 enabled with RSA keys. Telnet disabled on all VTY lines. | All Switches | [F1](./Verification/evidence.md)  |
+| F2 | Central authentication through AAA-Server (TACACS+) with individual admin accounts. One local emergency account as fallback if the server is unreachable | All switches | [F2](./Verification/evidence.md) |
+| F3 | DHCP ssnooping all user vlans, uplinks to distribution switches trusted, user ports untrusted | Access Switches | [F3](./Verification/evidence.md) |
+| F4 | Dynamic ARP inspection on all user VLANs, validated against DHCP snooping bindings; uplinks trusted | Access switches | [F4](./Verification/evidence.md) |
+| F5 | Port security on user ports: 1 MAC per port, sticky learning, shutdown on violation | Access switch user ports | [F5](./Verification/evidence.md) |
+| F6 | PortFast with BPDU Guard on all user ports; a switch connected to a user port is err-disabled | Access switch user ports | [F6](./Verification/evidence.md) |
+| F7 | VTY access restricted to the management VLANs (10.0.99.0/24, 10.0.199.0/24) | All switches | [F7](./Verification/evidence.md) |
+| F8 | enable secret replaces enable password, local accounts use secret. service password-encryption enabled as an extra measure. | All Switches | [F8](./Verification/evidence.md)|
+| F9 | Idle timeout on console and VTY lines; login attempts limited on SSH | All switches | [F9](./Verification/evidence.md) |
+| F10 | Login banner stating that access is restricted and monitored | All switches | [F10](./Verification/evidence.md) |
 
 
 ## Topology Changes
@@ -59,10 +59,6 @@ Before TNARC expands to new branches, an internal security review audits the HQ 
     - DAI uses the DHCP snooping binding table to reliably compare the relationship between IP to MAC address. Without the snooping binding table, DAI would drop all packets. 
     - For static IPs there are a few work arounds: 1. ARP ACL, create a list of allowed IP to MAC pairs (statics) and use "ip arp inspection filter <acl> vlan <id>". 2. Give the device a fixed address that is reserved on the server. 3. Leave static IPs in a VLAN without DAI. This lab has all vlans and hosts on DHCP addresses so these conditions do not affect my hosts, but if they did these would be the options.
 
-## Verification
-| Test | Finding | Expected | Result |
-|------|---------|----------|--------|
-
 ## Challenges and Fixes
 1. Access switches were not able to receive ping responses beyond the distribution switches.
     - A default gateway needed to be configured globally for the SVIs subnet. The default gateway does not affect traffic from the other VLANs.
@@ -86,3 +82,7 @@ Before TNARC expands to new branches, an internal security review audits the HQ 
 2. Port Security trusts MAC addresses, which can be spoofed. 802.1X port authentication would close the gap but is not within the scope of the lab.
 
 ## What I'd Do Next
+1. Add Web, DNS, NTP and Firewall services across the network.
+2. Multi-site WAN with dynamic routing for any branches that need connection to HQ.
+3. NOC and Network Management.
+4. Enterprise Wireless.
